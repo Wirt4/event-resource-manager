@@ -1,6 +1,7 @@
 services:
   application:
     container_name: foodfinder-application
+    user: ${MY_USER}
     image: node:lts-alpine
     ports:
       - 3000:3000
