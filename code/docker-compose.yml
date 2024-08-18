@@ -1,5 +1,20 @@
-version: "3.0"
 services:
+  application:
+    container_name: foodfinder-application
+    image: node:lts-alpine
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/home/node/code
+    working_dir: /home/node/code/foodfinder-application
+    command: "npm run dev"
+    depends_on:
+      - backend
+    environment:
+      - HOST=0.0.0.0
+      - CHOKIDAR_USEPOLLING=true
+      - CHOKIDAR_INTERVAL=100
+    tty: true
   backend:
     container_name: foodfinder-backend
     image: mongo:latest
