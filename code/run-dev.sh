@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker compose up
+MY_USER=$(id -u):$(id -g) docker compose up
