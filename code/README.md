@@ -1,7 +1,14 @@
 # food-finder
 
-##to host##
-run `docker compose up` from root, the configuration file automatically sets `npm run dev` inside the frontend
+## Requirments
+POSIX compliant OS
+docker 
+
+## To Host
+Check that docker is running.
+
+run `sh run-dev.sh` to start
+run `sh stop-dev.sh` to shut it down
 
 frontend and middleware are hosted on port 3000
 backend is hosted on port 27017
