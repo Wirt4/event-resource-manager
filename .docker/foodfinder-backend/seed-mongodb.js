@@ -1,6 +1,4 @@
-print("Seeding the collection 'locations' in the 'foodlist' db");
-
-db.locations.insert([
+const seed_data = [
     {
         address: "6220 Avenue U",
         zipcode: "NY 11234",
@@ -406,6 +404,7 @@ db.locations.insert([
         on_wishlist: [],
         location_id: "63426",
     },
-]);
+]
 
-print("Completed seeding MongoDB!");
+//invoke mongo functionality
+db.locations.insert(seed_data)
