@@ -1,5 +1,7 @@
 import mongoose, { ConnectOptions } from "mongoose"
 
+const TEN_SECONDS = 10000
+const TWENTY_SECONDS = 20000
 
 function getURI(): string {
     const MONGO_URI = process.env.MONGO_URI || null
@@ -22,9 +24,9 @@ function getCached() {
 function cachedOptions(): ConnectOptions {
     return {
         bufferCommands: false,
-        maxIdleTimeMS: 10000,
-        serverSelectionTimeoutMS: 10000,
-        socketTimeoutMS: 20000
+        maxIdleTimeMS: TEN_SECONDS,
+        serverSelectionTimeoutMS: TEN_SECONDS,
+        socketTimeoutMS: TWENTY_SECONDS
     }
 }
 
@@ -48,11 +50,11 @@ async function dbConnect(): Promise<any> {
 
     const opts: ConnectOptions = cachedOptions()
 
-    cached.promise = mongoose
-        .connect(MONGO_URI, opts)
-        .then((mongoose) => mongoose)
-        .catch((err) => { throw new Error(String(err)) })
-
+    try {
+        cached.promise = await mongoose.connect(MONGO_URI, opts);
+    } catch (err) {
+        throw new Error(String(err));
+    }
     try {
         cached.conn = await cached.promise
     } catch (err) {
