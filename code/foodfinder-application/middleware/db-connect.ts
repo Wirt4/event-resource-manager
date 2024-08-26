@@ -12,53 +12,47 @@ function getURI(): string {
 }
 
 function getCached() {
-    const cached = global.mongoose
-    if (cached) {
-        return cached
+    if (global?.mongoose) {
+        return global.mongoose
     }
 
     global.mongoose = { conn: null, promise: null }
     return global.mongoose
 }
 
-function cachedOptions(): ConnectOptions {
-    return {
+function throwStringErr(err: any) {
+    throw new Error(String(err))
+}
+
+async function setMongooseConnection(): Promise<any> {
+    const MONGO_URI = getURI()
+    const opts: ConnectOptions = {
         bufferCommands: false,
         maxIdleTimeMS: TEN_SECONDS,
         serverSelectionTimeoutMS: TEN_SECONDS,
         socketTimeoutMS: TWENTY_SECONDS
     }
+
+    return mongoose.connect(MONGO_URI, opts);
 }
 
 async function dbConnect(): Promise<any> {
-
-    const MONGO_URI = getURI()
-
     let cached = getCached()
     if (cached.conn) {
         return cached.conn
     }
 
-    if (cached.promise) {
+    if (!cached.promise) {
         try {
-            cached.conn = await cached.promise
+            cached.promise = await setMongooseConnection()
         } catch (err) {
-            throw new Error(String(err))
+            throwStringErr(err)
         }
-        return cached.conn
-    }
-
-    const opts: ConnectOptions = cachedOptions()
-
-    try {
-        cached.promise = await mongoose.connect(MONGO_URI, opts);
-    } catch (err) {
-        throw new Error(String(err));
     }
     try {
         cached.conn = await cached.promise
     } catch (err) {
-        throw new Error(String(err))
+        throwStringErr(err)
     }
 
     return cached.conn
