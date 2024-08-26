@@ -7,7 +7,8 @@ First, run the development server:
 ```bash
 npm run dev
 ```
-Specifically, run `docker exec -it foodfinder-backend npm run dev` while the docker container is running.
+This is handled in the docker yml.
+
 To start docker, run `docker compose up -d`
 To kill docker, run `docker compose down`
 
