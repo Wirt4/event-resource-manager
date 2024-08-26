@@ -1,39 +1,65 @@
 import mongoose, { ConnectOptions } from "mongoose"
 
 
-async function dbConnect(): Promise<any> {
-
-    const MONGO_URI = process.env.MONGO_URI || ""
-    if (!MONGO_URI.length) {
+function getURI(): string {
+    const MONGO_URI = process.env.MONGO_URI || null
+    if (MONGO_URI === null) {
         throw new Error("Please define the MONGO_URI environment variable(.env.local)")
     }
+    return MONGO_URI
+}
 
-    let cached = global.mongoose
-    if (!cached) {
-        cached = global.mongoose = { conn: null, promise: null }
+function getCached() {
+    const cached = global.mongoose
+    if (cached) {
+        return cached
     }
+
+    global.mongoose = { conn: null, promise: null }
+    return global.mongoose
+}
+
+function cachedOptions(): ConnectOptions {
+    return {
+        bufferCommands: false,
+        maxIdleTimeMS: 10000,
+        serverSelectionTimeoutMS: 10000,
+        socketTimeoutMS: 20000
+    }
+}
+
+async function dbConnect(): Promise<any> {
+
+    const MONGO_URI = getURI()
+
+    let cached = getCached()
     if (cached.conn) {
         return cached.conn
     }
 
-    if (!cached.promise) {
-        const opts: ConnectOptions = {
-            bufferCommands: false,
-            maxIdleTimeMS: 10000,
-            serverSelectionTimeoutMS: 10000,
-            socketTimeoutMS: 20000
+    if (cached.promise) {
+        try {
+            cached.conn = await cached.promise
+        } catch (err) {
+            throw new Error(String(err))
         }
-
-        cached.promise = mongoose
-            .connect(MONGO_URI, opts)
-            .then((mongoose) => mongoose)
-            .catch((err) => { throw new Error(String(err)) })
+        return cached.conn
     }
+
+    const opts: ConnectOptions = cachedOptions()
+
+    cached.promise = mongoose
+        .connect(MONGO_URI, opts)
+        .then((mongoose) => mongoose)
+        .catch((err) => { throw new Error(String(err)) })
+
     try {
         cached.conn = await cached.promise
     } catch (err) {
         throw new Error(String(err))
     }
+
     return cached.conn
 }
+
 export default dbConnect
