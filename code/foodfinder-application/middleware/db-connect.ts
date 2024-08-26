@@ -1,6 +1,5 @@
 import mongoose, { ConnectOptions } from "mongoose"
 
-//TODO: implement
 const MONGO_URI = process.env.MONGO_URI || ""
 if (!MONGO_URI.length) {
     throw new Error("Please define the MONGO_URI environment variable(.env.local)")

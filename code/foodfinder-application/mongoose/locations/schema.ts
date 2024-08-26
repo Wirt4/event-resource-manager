@@ -1,5 +1,4 @@
-import { Schema, InferSchemaType } from "mongoose";
-//TODO: populate below with info for location schema
+import { Schema, InferSchemaType } from "mongoose"
 
 export const LocationSchema: Schema = new Schema<LocationType>({
     address: {
