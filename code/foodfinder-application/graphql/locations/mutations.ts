@@ -1,5 +1,4 @@
 import { updateWishList } from "@/mongoose/locations/services"
-//don't like these arrow funcitons. they're hard to follow
 //does this interface belong in this file?
 interface UpdateWishlistInterface {
     user_id: string,
