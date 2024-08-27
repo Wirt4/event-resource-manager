@@ -12,3 +12,11 @@ export interface UpdateWishlistInterface {
     user_id: string,
     location_id: string
 }
+
+export interface LocationsByIdInterface {
+    location_ids: string[]
+}
+
+export interface OnUserWishlistInterface {
+    user_id: string
+}
