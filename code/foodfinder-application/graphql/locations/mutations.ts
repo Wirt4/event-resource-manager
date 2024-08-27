@@ -1,7 +1,7 @@
 import { updateWishList } from "@/mongoose/locations/services"
 import { UpdateWishlistInterface } from "@/mongoose/locations/custom"
-import { actions } from "graphql/locations/actions"
-// for used in resolvers
+import { actions } from "graphql/locations/enums/actions"
+// for use in resolvers
 export const locationMutations = {
     removeWishlist: async function (_: any,
         param: UpdateWishlistInterface) {
