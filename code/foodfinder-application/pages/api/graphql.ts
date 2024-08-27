@@ -4,30 +4,44 @@ import { startServerAndCreateNextHandler } from "@as-integrations/next";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { resolvers } from "@/graphql/locations/resolvers";
 import { typeDefs } from "@/graphql/schema"
-//TODO: pick a lane - arrow functions or standard def functions
-const server = new ApolloServer<BaseContext>({ resolvers, typeDefs })
+
+const connectDB = function (fn: NextApiHandler) {
+    return async function (req: NextApiRequest, res: NextApiResponse) {
+        await dbConnect()
+        return fn(req, res)
+    }
+}
+
+//relies on TS's pass-by reference behavior with non-primitive objects
+const setHeaders = function (res: NextApiResponse) {
+    const post = "POST"
+    res.setHeader("Allow", post)
+    const access_control = "Access-Control-Allow"
+    const wildcard = "*"
+    res.setHeader(`${access_control}-Origin`, wildcard)
+    res.setHeader(`${access_control}-Methods`, post)
+    res.setHeader(`${access_control}-Headers`, wildcard)
+    res.setHeader(`${access_control}-Credentials`, "true")
+}
+
+const allowCors = function (fn: NextApiHandler) {
+    return async function (req: NextApiRequest, res: NextApiResponse) {
+        setHeaders(res)
+        return fn(req, res)
+    }
+}
+
 const blank_token = async function () {
     return { token: {} }
 }
-const options = {
-    context: blank_token
-}
-//separate data from functionality here
-const handler = startServerAndCreateNextHandler(server, options)
-//is allowCors itself async? what gives here?
-const allowCors =
-    (fn: NextApiHandler) => async (req: NextApiRequest, res: NextApiResponse) => {
-        res.setHeader("Allow", "POST")
-        res.setHeader("Access-Control-Allow-Origin", "*")
-        res.setHeader("Access-Control-Allow-Methods", "POST")
-        res.setHeader("Access-Control-Allow-Headers", "*")
-        res.setHeader("Access-Control-Allow-Credentials", "true")
-        return await fn(req, res)
+
+const createHandler = function () {
+    const server = new ApolloServer<BaseContext>({ resolvers, typeDefs })
+    const options = {
+        context: blank_token
     }
 
-const connectDB = (fn: NextApiHandler) => async (req: NextApiRequest, res: NextApiResponse) => {
-    await dbConnect()
-    return await fn(req, res)
+    return startServerAndCreateNextHandler(server, options)
 }
 
-export default connectDB(allowCors(handler))
+export default connectDB(allowCors(createHandler()))
