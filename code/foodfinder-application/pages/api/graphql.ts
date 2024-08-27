@@ -5,14 +5,24 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { resolvers } from "@/graphql/locations/resolvers";
 import { typeDefs } from "@/graphql/schema"
 
+/**
+ * calls dbConnect before calling the argument.
+ * 
+ * @param fn : n apiNextHandler
+ * @returns asynchronous function 
+ */
 const connectDB = function (fn: NextApiHandler) {
     return async function (req: NextApiRequest, res: NextApiResponse) {
         await dbConnect()
         return fn(req, res)
     }
 }
-
-//relies on TS's pass-by reference behavior with non-primitive objects
+/**
+ * sets the Access Control headers
+ * @param res  a NextApiResponse
+ * behavior is pass-by-reference
+ * res is mutated to set Allo and Access-Control-Allow headers
+ */
 const setHeaders = function (res: NextApiResponse) {
     const post = "POST"
     res.setHeader("Allow", post)
@@ -24,17 +34,29 @@ const setHeaders = function (res: NextApiResponse) {
     res.setHeader(`${access_control}-Credentials`, "true")
 }
 
-const allowCors = function (fn: NextApiHandler) {
+/**
+ * sets teh headers before calling the argument
+ * @param handler : a Nextapi Handler, callable liek a method
+ * @returns an asynchronous function 
+ */
+const allowCors = function (handler: NextApiHandler) {
     return async function (req: NextApiRequest, res: NextApiResponse) {
         setHeaders(res)
-        return fn(req, res)
+        return handler(req, res)
     }
 }
-
+/**
+ * 
+ * @returns boilerplate empty token
+ */
 const blank_token = async function () {
     return { token: {} }
 }
 
+/**
+ * 
+ * @returns Handler
+ */
 const createHandler = function () {
     const server = new ApolloServer<BaseContext>({ resolvers, typeDefs })
     const options = {

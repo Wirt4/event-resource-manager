@@ -8,7 +8,7 @@ export default async function handler(
   res: NextApiResponse<any>,
 ) {
   await dbConnect()
-  const locations = await onUserWishList(['12340', "61390"])
+  const locations = await findLocationById([""])
   console.log(typeof locations)
   res.status(200).json(locations)
 }
