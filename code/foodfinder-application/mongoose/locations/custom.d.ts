@@ -7,3 +7,8 @@ export declare type FilterWishlistType = {
         $in: string[]
     }
 }
+
+export interface UpdateWishlistInterface {
+    user_id: string,
+    location_id: string
+}

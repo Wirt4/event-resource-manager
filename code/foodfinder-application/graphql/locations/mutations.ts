@@ -1,9 +1,5 @@
 import { updateWishList } from "@/mongoose/locations/services"
-//does this interface belong in this file?
-interface UpdateWishlistInterface {
-    user_id: string,
-    location_id: string
-}
+import { UpdateWishlistInterface } from "@/mongoose/locations/custom"
 
 class LocationMutations {
     async removeWishlist(_: any,
