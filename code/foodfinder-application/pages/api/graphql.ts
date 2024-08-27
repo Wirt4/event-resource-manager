@@ -4,17 +4,16 @@ import { startServerAndCreateNextHandler } from "@as-integrations/next";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { resolvers } from "@/graphql/locations/resolvers";
 import { typeDefs } from "@/graphql/schema"
-//TODO: implement resolvers and typeDefs
 //TODO: pick a lane - arrow functions or standard def functions
 const server = new ApolloServer<BaseContext>({ resolvers, typeDefs })
-
+const blank_token = async function () {
+    return { token: {} }
+}
+const options = {
+    context: blank_token
+}
 //separate data from functionality here
-const handler = startServerAndCreateNextHandler(server, {
-    context: async () => {
-        const token = {}
-        return { token }
-    }
-})
+const handler = startServerAndCreateNextHandler(server, options)
 //is allowCors itself async? what gives here?
 const allowCors =
     (fn: NextApiHandler) => async (req: NextApiRequest, res: NextApiResponse) => {
