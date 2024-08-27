@@ -1,8 +1,7 @@
-//don't like the magic numbers below
-
 // provides the gql schema for the custom types
 const one_minute = 60
 const twenty_four_hours = 86400
+
 export default `
     directive @cacheControl(maxAge: Int) on FIELD_DEFINITION | OBJECT
     type Location @cacheControl(maxAge: ${twenty_four_hours}) {
