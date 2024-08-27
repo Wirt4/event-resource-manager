@@ -1,6 +1,7 @@
 import { LocationsByIdInterface, OnUserWishlistInterface } from "@/mongoose/locations/custom"
 import { findAllLocations, findLocationById, onUserWishList } from "@/mongoose/locations/services"
 
+//for use in resolvers.ts
 export const locationQueries = {
     allLocations: async function (_: any) {
         return findAllLocations()
