@@ -1,5 +1,3 @@
-//TODO: implement
-
 import { findAllLocations, findLocationById, onUserWishList } from "@/mongoose/locations/services"
 
 export const locationQueries = {
