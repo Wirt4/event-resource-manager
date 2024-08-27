@@ -35,7 +35,7 @@ const setHeaders = function (res: NextApiResponse) {
 }
 
 /**
- * sets teh headers before calling the argument
+ * sets the headers before calling the argument
  * @param handler : a Nextapi Handler, callable liek a method
  * @returns an asynchronous function 
  */
@@ -55,7 +55,7 @@ const blank_token = async function () {
 
 /**
  * 
- * @returns Handler
+ * @returns a handler for connecting NextApi with Apollo server
  */
 const createHandler = function () {
     const server = new ApolloServer<BaseContext>({ resolvers, typeDefs })
