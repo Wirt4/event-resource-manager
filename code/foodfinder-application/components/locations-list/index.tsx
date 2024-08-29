@@ -1,6 +1,7 @@
 import LocationsListItem from "../locations-list-item";
 import styles from "./index.module.css"
 import { LocationType } from "mongoose/locations/schema"
+
 interface PropsInterface {
     locations: LocationType[]
 }
