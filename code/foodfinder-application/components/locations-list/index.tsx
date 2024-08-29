@@ -5,7 +5,7 @@ interface PropsInterface {
     locations: LocationType[]
 }
 
-const LocationsList = (props: PropsInterface): JSX.Element => {
+const LocationsList = function (props: PropsInterface): JSX.Element {
     return (
         <ul className={styles.root}>
             {props.locations.map((location) => {

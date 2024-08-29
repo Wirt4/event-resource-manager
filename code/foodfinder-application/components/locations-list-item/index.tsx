@@ -6,7 +6,7 @@ interface PropsInterface {
     location: LocationType
 }
 
-const LocationsListItem = (props: PropsInterface): JSX.Element => {
+const LocationsListItem = function (props: PropsInterface): JSX.Element {
     const location = props.location
     return (
         <>

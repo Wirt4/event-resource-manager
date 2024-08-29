@@ -10,7 +10,7 @@ import { LocationType } from "@/mongoose/locations/schema"
  * Page does not compile otherwise
  * @returns GetStaticProps
  */
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async function () {
   let locations: LocationType[] | []
   try {
     await dbConnect()
@@ -29,7 +29,7 @@ export const getStaticProps: GetStaticProps = async () => {
  * @param props 
  * @returns the landing page for the food finder
  */
-const Home: NextPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Home: NextPage = function (props: InferGetStaticPropsType<typeof getStaticProps>) {
   const locations: LocationType[] = JSON.parse(props.data?.locations)
 
   return (
