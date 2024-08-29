@@ -30,7 +30,7 @@ const LocationsListItem = function (props: PropsInterface): JSX.Element {
             {location && (
                 <li className={styles.root}>
                     <Link href={`/location/${location.location_id}`}>
-                        LocationDescription(location)
+                        {LocationDescription(location)}
                     </Link>
                 </li>
             )}
