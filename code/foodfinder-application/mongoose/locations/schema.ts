@@ -1,6 +1,6 @@
-import { Schema, InferSchemaType } from "mongoose"
+import { Schema } from "mongoose"
 
-const schema_spec = {
+export const LocationSchema: Schema = new Schema<LocationType>({
     address: {
         type: "String",
         required: true
@@ -37,6 +37,16 @@ const schema_spec = {
         type: "String",
         required: true
     }
+})
+export interface LocationType {
+    address: string;
+    street: string;
+    zipcode: string;
+    borough: string;
+    cuisine: string;
+    grade: string;
+    name: string;
+    on_wishlist: string[];
+    location_id: string;
 }
-export const LocationSchema: Schema = new Schema<LocationType>(schema_spec)
-export declare type LocationType = InferSchemaType<typeof LocationSchema>
+

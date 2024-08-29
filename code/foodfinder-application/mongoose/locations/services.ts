@@ -2,6 +2,7 @@ import { LocationType } from "mongoose/locations/schema"
 import { FilterLocationType, FilterWishlistType } from "mongoose/locations/custom"
 import Locations from "mongoose/locations/model"
 import { QueryOptions } from "mongoose"
+
 export async function findAllLocations(): Promise<LocationType[] | []> {
     const filter = {}
     return findLocations(filter)
