@@ -8,11 +8,10 @@ import { LocationType } from "@/mongoose/locations/schema"
 
 const Home: NextPage = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const locations: LocationType[] = JSON.parse(props.data?.locations)
-  let title = `The Food Finder - Home`
   return (
     <div>
       <Head>
-        <title>{title}</title>
+        <title>The Food Finder - Home</title>
         <meta name="description" content="The Food Finder - Home" />
 
         <h1>Welcome to the Food Finder!</h1>
