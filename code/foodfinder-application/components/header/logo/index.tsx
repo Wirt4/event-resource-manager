@@ -1,8 +1,12 @@
-import logo from "/public/assets/logo.png"
 import Image from "next/image"
+import Link from "next/link"
+
+import logo from "/public/assets/logo.png"
+import styles from "./index.module.css"
+
 const Logo = function (): JSX.Element {
     return (
-        <div style={{ width: '100px', height: '100px', position: 'relative' }}>
+        <Link href="/" passHref className={styles.root}>
             <Image
                 alt="Logo: Food Finder"
                 src={logo}
@@ -10,6 +14,6 @@ const Logo = function (): JSX.Element {
                 fill
                 priority
             />
-        </div>)
+        </Link>)
 }
 export default Logo
