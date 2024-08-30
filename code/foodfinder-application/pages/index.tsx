@@ -37,9 +37,9 @@ const Home: NextPage = function (props: InferGetStaticPropsType<typeof getStatic
       <Head>
         <title>The Food Finder - Home</title>
         <meta name="description" content="The Food Finder - Home" />
-        <h1>Welcome to the Food Finder!</h1>
-        <LocationsList locations={locations} />
       </Head>
+      <h1>Welcome to the Food Finder!</h1>
+      <LocationsList locations={locations} />
     </div>
   )
 }
