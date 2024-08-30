@@ -7,7 +7,7 @@ interface PropsInterface {
 const Layout = function (props: PropsInterface): JSX.Element {
     return (<>
         <Header />
-        <main>
+        <main className="layout-grid">
             {props.children}
         </main>
     </>)
