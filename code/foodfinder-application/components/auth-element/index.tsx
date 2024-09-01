@@ -3,6 +3,11 @@ import styles from "./index.module.css"
 import { signIn, useSession, signOut } from "next-auth/react"
 import Link from "next/link"
 
+enum auth {
+    AUTHENTICATED = "authenticated",
+    UNAUTHENTICATED = "unauthenticated"
+}
+
 interface Session {
     user: {
         name: string
@@ -10,21 +15,29 @@ interface Session {
     }
 }
 
-const greeting = (session: Session): JSX.Element => {
+const greeting = function (session: Session): JSX.Element {
     return (<span className={styles.name}>
         Hello <strong>{session?.user.name}</strong>
     </span>)
 }
 
-const SignInButton = (): JSX.Element => {
+const signingButton = function (content: string, fn: Function): JSX.Element {
     return (<>
-        <Button variant="blue" clickHandler={() => signIn()}>
-            Sign In
+        <Button variant="blue" clickHandler={() => fn()}>
+            {content}
         </Button>
     </>)
 }
 
-const WishListButton = (session: Session): JSX.Element => {
+const signInButton = function (): JSX.Element {
+    return signingButton('Sign In', signIn)
+}
+
+const signOutButton = function (): JSX.Element {
+    return signingButton('Sign Out', signOut)
+}
+
+const wishListButton = function (session: Session): JSX.Element {
     return (<Button variant="outline">
         <Link href={`/list/${session?.user.fdlst_private_userId}`}>
             Your wish list
@@ -32,21 +45,15 @@ const WishListButton = (session: Session): JSX.Element => {
     </Button>)
 }
 
-const signOutButton = (): JSX.Element => {
-    return (<Button variant="blue" clickHandler={() => signOut()}>
-        Sign Out
-    </Button>)
-}
-
-const AuthElement = (): JSX.Element => {
+const AuthElement = function (): JSX.Element {
     const { data: session, status } = useSession()
     return (<>
-        {status === "authenticated" && (greeting(session))}
+        {status === auth.AUTHENTICATED && (greeting(session))}
         <nav className={styles.root}>
-            {status === "unauthenticated" && (SignInButton())}
-            {status === "authenticated" && (
+            {status === auth.UNAUTHENTICATED && (signInButton())}
+            {status === auth.AUTHENTICATED && (
                 <>
-                    {WishListButton(session)}
+                    {wishListButton(session)}
                     {signOutButton()}
                 </>
             )}
