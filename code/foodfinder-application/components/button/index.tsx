@@ -31,7 +31,9 @@ const Button = (props: PropsInterface): JSX.Element => {
             styles.root,
             disabled ? styles.disabled : "",
             styles[variant || "default"]
-        ].join(" ")}></div>)
+        ].join(" ")}>
+        {renderContent(children)}
+    </div>)
 }
 
 export default Button
