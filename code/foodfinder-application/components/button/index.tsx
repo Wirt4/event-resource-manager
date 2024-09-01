@@ -8,31 +8,38 @@ interface PropsInterface {
     clickHandler?: () => any;
 }
 
-const Button = (props: PropsInterface): JSX.Element => {
-    const { children, variant, disabled, clickHandler } = props
 
-    const renderContent = (children: React.ReactNode) => {
-        if (disabled) {
-            return (
-                <span className={styles.span}>
-                    {children}
-                </span>
-            )
-        } else {
-            return (
-                <span className={styles.span} onClick={clickHandler}>
-                    {children}
-                </span>
-            )
-        }
+
+const renderContent = (props: PropsInterface): JSX.Element => {
+    if (props.disabled) {
+        return (
+            <span className={styles.span}>
+                {props.children}
+            </span>
+        )
     }
+
+    return (
+        <span className={styles.span} onClick={props.clickHandler}>
+            {props.children}
+        </span>
+    )
+}
+
+const className = function (props: PropsInterface): string {
+    const disabled = props.disabled ? styles.disabled : ""
+    const variant = props.variant || "default"
+    return [
+        styles.root,
+        disabled,
+        styles[variant]
+    ].join(" ")
+}
+
+const Button = (props: PropsInterface): JSX.Element => {
     return (<div
-        className={[
-            styles.root,
-            disabled ? styles.disabled : "",
-            styles[variant || "default"]
-        ].join(" ")}>
-        {renderContent(children)}
+        className={className(props)}>
+        {renderContent(props)}
     </div>)
 }
 
