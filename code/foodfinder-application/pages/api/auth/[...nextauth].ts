@@ -9,7 +9,7 @@ const createUserId = (base: string): string => {
 
 //Is this inconsistent form here?
 
-export default async function auth(req: NextApiRequest, res: NextApiResponse) {
+async function auth(req: NextApiRequest, res: NextApiResponse) {
     return await NextAuth(req, res, {
         providers: [
             GithubProvider({
@@ -35,3 +35,5 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     })
 
 }
+
+export default auth
