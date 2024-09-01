@@ -1,6 +1,6 @@
 import Button from "../button"
 import styles from "./index.module.css"
-import { signIn, useSession } from "next-auth/react"
+import { signIn, useSession, signOut } from "next-auth/react"
 import Link from "next/link"
 
 const AuthElement = (): JSX.Element => {
@@ -25,7 +25,7 @@ const AuthElement = (): JSX.Element => {
                         </Link>
                     </Button>
 
-                    <Button variant="blue" clickHandler={() => signIn()}>
+                    <Button variant="blue" clickHandler={() => signOut()}>
                         Sign Out
                     </Button>
                 </>
