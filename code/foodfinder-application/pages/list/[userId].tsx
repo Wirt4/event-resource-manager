@@ -7,23 +7,21 @@ import Head from "next/head"
 import LocationsList from "@/components/locations-list"
 
 import { ParsedUrlQuery } from "querystring"
-export const getSeverSideProps: GetServerSideProps = async (context: GetServerSidePropsContext<ParsedUrlQuery, PreviewData>) => {
+export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext<ParsedUrlQuery, PreviewData>) => {
     const { userId } = context.query
     let locations: LocationType[] | [] = []
     try {
         await dbConnect()
         locations = await onUserWishList(userId as string)
-        console.log('locations fetched')
-        console.log({ locations })
     } catch (err: any) {
         console.log('error from connection...')
         console.error({ err })
-    } finally {
-        return { props: { data: { locations: JSON.stringify(locations), userId: userId } } }
     }
+
+    return { props: { data: { locations: JSON.stringify(locations), userId: userId } } }
 }
 
-const List: NextPage = (props: InferGetServerSidePropsType<typeof getSeverSideProps>) => {
+const List: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const locations: LocationType[] = JSON.parse(props.data?.locations || "{\"locations\":[]}")
     const userId: string | undefined = props.data?.userId
     const { data: session } = useSession()
