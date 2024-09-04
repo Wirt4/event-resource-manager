@@ -11,3 +11,7 @@ The script `seed-mongodb.js` will run automatically if there is no existing data
 
 If you need to wipe the database clean and start fresh, run `docker volume rm food-finder_mongodb_data_container` to remove the container.
 
+## Running and Debugging in WebStorm
+
+Under Run/Debug configurations, first run `containers` to start the app.
+Then select `debug` and hit the debug button to take advantage of breakpoint debugging.
