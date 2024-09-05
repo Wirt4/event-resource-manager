@@ -42,26 +42,41 @@ const LocationDetail = function (props: PropsInterface): JSX.Element {
         if (loading) {return false}
         setLoading(true)
         let action = !onWishlist? "addWishlist" : "removeWishlist"
-//getting bad request notices from below - 400s
+        const addWishlistMutation = `
+            mutation AddWishlist($locationId: String!, $userId: String!) {
+                addWishlist(location_id: $locationId, user_id: $userId) {
+                    address
+                    street
+                    zipcode
+                    borough
+                    cuisine
+                    grade
+                    name
+                    on_wishlist
+                    location_id
+                }
+            }
+        `
+        const body =  JSON.stringify({
+            query: addWishlistMutation,
+            variables: {
+                locationId,
+                userId
+            }
+        });
         fetch("/api/graphql",{
             method: "POST",
             headers:{
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                query: `mutation wishlist {
-                $(action)(
-                    location_id: "${locationId}",
-                    user_id: "${userId}"
-                    ){
-                        on_wishlist
-                    }
-                }`
+            body: body
             })
-        }).then((result)=>{
+            .then((result)=>{
             if (result.status === 200){
                 setOnWishlist(action === "addWishlist"? true: false)
             }
+        }).catch(err=>{
+            console.error({err})
         }).finally(()=>{
             setLoading(false)
         })
