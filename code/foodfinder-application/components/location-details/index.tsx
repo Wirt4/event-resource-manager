@@ -57,8 +57,23 @@ const LocationDetail = function (props: PropsInterface): JSX.Element {
                 }
             }
         `
+        const removeWishlistMutation = `
+            mutation RemoveWishlist($locationId: String!, $userId: String!) {
+                removeWishlist(location_id: $locationId, user_id: $userId) {
+                    address
+                    street
+                    zipcode
+                    borough
+                    cuisine
+                    grade
+                    name
+                    on_wishlist
+                    location_id
+                }
+            }
+        `
         const body =  JSON.stringify({
-            query: addWishlistMutation,
+            query: !onWishlist?addWishlistMutation: removeWishlistMutation,
             variables: {
                 locationId,
                 userId
