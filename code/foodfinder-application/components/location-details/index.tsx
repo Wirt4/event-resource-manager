@@ -2,7 +2,7 @@ import { LocationType } from "mongoose/locations/schema"
 import styles from "./index.module.css"
 
 import {useSession} from "next-auth/react"
-import { useEffect, useState} from "react"
+import {ReactElement, useEffect, useState} from "react"
 import Button from "components/button"
 
 interface PropsInterface {
@@ -14,8 +14,24 @@ interface WishlistInterface{
     userId: string
 }
 
-const LocationsList = function (location: LocationType): JSX.Element {
+interface WishlistButtonInterface {
+    props: WishlistInterface,
+    onWishlist: Boolean,
+    loading: Boolean,
+    wishlistAction: Function
+}
 
+enum WishlistAction{
+    ADD= "addWishlist",
+    REMOVE= "removeWishlist"
+}
+
+enum ButtonVariant{
+    OUTLINE ="outline",
+    BLUE = "blue"
+}
+
+const locationsList = function (location: LocationType): ReactElement | null {
     return (<ul className={styles.root}>
         <li><strong>Address:</strong> {location.address}</li>
         <li><strong>Zipcode:</strong> {location.zipcode}</li>
@@ -25,93 +41,98 @@ const LocationsList = function (location: LocationType): JSX.Element {
     </ul>)
 }
 
-const LocationDetail = function (props: PropsInterface): JSX.Element {
+const capitalizeFirstLetter = function (str: string): string {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+const getMutation = function(action: string): string {
+    return `
+            mutation ${capitalizeFirstLetter(action)}($locationId: String!, $userId: String!) {
+                ${action}(location_id: $locationId, user_id: $userId) {
+                    address
+                    street
+                    zipcode
+                    borough
+                    cuisine
+                    grade
+                    name
+                    on_wishlist
+                    location_id
+                }
+            }
+        `
+}
+
+const getBody = function(props: WishlistInterface, action: string){
+    const {locationId, userId} = props
+    return JSON.stringify({
+        query: getMutation(action),
+        variables: {
+            locationId,
+            userId
+        }
+    });
+}
+
+const getFetchOptions = function (props: WishlistInterface, action: string){
+    return ({
+        method: "POST",
+        headers:{
+            "Content-Type": "application/json"
+        },
+        body: getBody(props, action)
+    })
+}
+
+const wishListButton = function (props: WishlistButtonInterface ): ReactElement | null{
+    return(<Button
+        variant={!props.onWishlist ? ButtonVariant.OUTLINE: ButtonVariant.BLUE}
+        disabled = {!!props.loading}
+        clickHandler={() => props.wishlistAction(props.props)}
+    >
+        {props.onWishlist && <div>Remove from wishlist</div>}
+        {!props.onWishlist && <div>Add to wishlist</div>}
+    </Button>)
+}
+
+const LocationDetail = function (props: PropsInterface): ReactElement | null {
     const {data: session} = useSession()
-    const [onWishlist, setOnWishlist] = useState<Boolean>(false) //look up this kind of weird variable delcaration
+    const [onWishlist, setOnWishlist] = useState<Boolean>(false)
     const [loading, setLoading] = useState<Boolean>(false)
 
     useEffect(()=>{
-        let userId = session?.user.fdlist_private_userId
+        const userId = session?.user.fdlist_private_userId
         setOnWishlist(
-            userId && location.on_wishlist.includes(userId) ? true: false
+            !!(userId && location.on_wishlist.includes(userId))
         )
     }, [session])
 
-    const wishlistAction = (props: WishlistInterface)=>{
-        const {locationId, userId} = props
-        if (loading) {return false}
+    const wishlistAction = async (props: WishlistInterface)=>{
+        if (loading) {
+            return false
+        }
         setLoading(true)
-        let action = !onWishlist? "addWishlist" : "removeWishlist"
-        const addWishlistMutation = `
-            mutation AddWishlist($locationId: String!, $userId: String!) {
-                addWishlist(location_id: $locationId, user_id: $userId) {
-                    address
-                    street
-                    zipcode
-                    borough
-                    cuisine
-                    grade
-                    name
-                    on_wishlist
-                    location_id
-                }
-            }
-        `
-        const removeWishlistMutation = `
-            mutation RemoveWishlist($locationId: String!, $userId: String!) {
-                removeWishlist(location_id: $locationId, user_id: $userId) {
-                    address
-                    street
-                    zipcode
-                    borough
-                    cuisine
-                    grade
-                    name
-                    on_wishlist
-                    location_id
-                }
-            }
-        `
-        const body =  JSON.stringify({
-            query: !onWishlist?addWishlistMutation: removeWishlistMutation,
-            variables: {
-                locationId,
-                userId
-            }
-        });
-        fetch("/api/graphql",{
-            method: "POST",
-            headers:{
-                "Content-Type": "application/json"
-            },
-            body: body
-            })
-            .then((result)=>{
+        const action = onWishlist? WishlistAction.REMOVE : WishlistAction.ADD
+        try{
+            const result = await fetch("/api/graphql", getFetchOptions(props, action))
             if (result.status === 200){
-                setOnWishlist(action === "addWishlist"? true: false)
+                setOnWishlist(action == WishlistAction.ADD)
             }
-        }).catch(err=>{
-            console.error({err})
-        }).finally(()=>{
-            setLoading(false)
-        })
+        }catch(error){
+            console.error({error})
+        }
+        setLoading(false)
     }
+
     const { location } = props
     return (<div>
-        {location && (LocationsList(location))}
-        {session?.user.fdlst_private_userId && (
-            <Button
-            variant={!onWishlist ? "outline": "blue"}
-            disabled = {loading? true: false}
-            clickHandler={() => wishlistAction({
-                locationId: location.location_id,
-                userId: session?.user.fdlst_private_userId
-            })}
-           >
-            {onWishlist && <div>Remove from wishlist</div>}
-            {!onWishlist && <div>Add to wishlist</div>}
-        </Button>
-        )}
+        {location && (locationsList(location))}
+        {session?.user.fdlst_private_userId && (wishListButton({
+            props:{userId:session?.user.fdlst_private_userId, locationId: location.location_id},
+            onWishlist: onWishlist,
+            loading: loading,
+            wishlistAction: wishlistAction
+        }))}
     </div>)
 }
 
