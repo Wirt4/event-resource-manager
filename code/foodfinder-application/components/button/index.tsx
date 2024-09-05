@@ -1,4 +1,4 @@
-import React from "react"
+import React, {ReactElement} from "react"
 import styles from "./index.module.css"
 
 interface PropsInterface {
@@ -8,9 +8,13 @@ interface PropsInterface {
     clickHandler?: () => any;
 }
 
-
-
-const renderContent = (props: PropsInterface): JSX.Element => {
+/**
+ * If the props.disabled == true, it returns a span with the children's props,
+ * else, it implements the props.clickHandler
+ * returns a <span> filled with props.children
+ * @param props
+ */
+function renderContent (props: PropsInterface): ReactElement | null {
     if (props.disabled) {
         return (
             <span className={styles.span}>
@@ -26,7 +30,12 @@ const renderContent = (props: PropsInterface): JSX.Element => {
     )
 }
 
-const className = function (props: PropsInterface): string {
+/**
+ * returns formatted string of references to the index.module.css to style button based on props
+ * returns a string of space-delimited styles
+ * @param props
+ */
+function className (props: PropsInterface): string {
     const disabled = props.disabled ? styles.disabled : ""
     const variant = props.variant || "default"
     return [
@@ -36,7 +45,12 @@ const className = function (props: PropsInterface): string {
     ].join(" ")
 }
 
-const Button = (props: PropsInterface): JSX.Element => {
+/**
+ * renders styling, content and clickHandler based on props
+ * @param props
+ * @constructor
+ */
+function Button  (props: PropsInterface): ReactElement | null  {
     return (<div
         className={className(props)}>
         {renderContent(props)}

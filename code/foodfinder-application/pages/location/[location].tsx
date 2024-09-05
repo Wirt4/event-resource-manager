@@ -35,9 +35,6 @@ export const getServerSideProps: GetServerSideProps = async function (
     try {
         await dbConnect()
         locations = await findLocationById([locationId as string])
-        if (!locations.length) {
-            throw new Error(`location: ${locationId} not found`)
-        }
     } catch (err: any) {
         return { notFound: true }
     }
