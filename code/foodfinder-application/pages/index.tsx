@@ -24,6 +24,7 @@ export const getStaticProps: GetStaticProps = async function () {
     }
   }
 }
+
 /**
  * 
  * @param props 

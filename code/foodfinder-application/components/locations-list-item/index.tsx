@@ -1,16 +1,17 @@
 import Link from "next/link"
 import styles from "./index.module.css"
 import { LocationType } from "mongoose/locations/schema"
+import {ReactElement} from "react";
 
 interface PropsInterface {
     location: LocationType
 }
 /**
  * 
- * @param loc a location
+ * @param location 
  * @returns formatted one-line description of location
  */
-const LocationDescription = function (location: LocationType): JSX.Element {
+function LocationDescription  (location: LocationType): ReactElement | null {
     return (<h2>
         {location.name}
         <small className={styles.details}>
@@ -23,7 +24,7 @@ const LocationDescription = function (location: LocationType): JSX.Element {
  * @param props 
  * @returns div with a link with the text "{location_name}: {location.cuisine} in {location.borough}"
  */
-const LocationsListItem = function (props: PropsInterface): JSX.Element {
+function LocationsListItem (props: PropsInterface): ReactElement | null {
     const location = props.location
     return (
         <div>

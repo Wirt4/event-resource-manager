@@ -1,12 +1,19 @@
-import LocationsListItem from "../locations-list-item";
-import styles from "./index.module.css"
+import LocationsListItem from "../locations-list-item"
 import { LocationType } from "mongoose/locations/schema"
+import {ReactElement} from "react"
+import styles from "./index.module.css"
 
 interface PropsInterface {
     locations: LocationType[]
 }
 
-const LocationsList = function (props: PropsInterface): JSX.Element {
+/**
+ * Returns an unordered list where each entry is a LocationsListItem
+ * the locations data is passed in props
+ * @param props
+ * @constructor
+ */
+function LocationsList (props: PropsInterface): ReactElement | null {
     return (
         <ul className={styles.root}>
             {props.locations.map((location) => {

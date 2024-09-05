@@ -5,8 +5,8 @@ import { GetServerSideProps, GetServerSidePropsContext, InferGetServerSidePropsT
 import { useSession } from "next-auth/react"
 import Head from "next/head"
 import LocationsList from "@/components/locations-list"
-
 import { ParsedUrlQuery } from "querystring"
+
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext<ParsedUrlQuery, PreviewData>) => {
     const { userId } = context.query
     let locations: LocationType[] | [] = []
