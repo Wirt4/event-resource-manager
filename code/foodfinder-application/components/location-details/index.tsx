@@ -3,6 +3,7 @@ import {ReactElement, useEffect, useState} from "react"
 import {LocationType} from "mongoose/locations/schema"
 import Button from "components/button"
 import styles from "./index.module.css"
+import {ButtonVariant} from "@/components/button/enum-variant"
 
 interface PropsInterface {
     location: LocationType
@@ -24,11 +25,6 @@ enum WishlistAction{
     ADD= "addWishlist",
     REMOVE= "removeWishlist"
 }
-
-enum ButtonVariant{
-    OUTLINE ="outline",
-    BLUE = "blue"
-} //TODO: move this in a file next to button.tsx and use wherever button is used
 
 /**
  * Returns styled, unordered list of the contents of fields of one location

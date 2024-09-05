@@ -3,6 +3,7 @@ import Button from "../button"
 import Link from "next/link"
 import {ReactElement} from "react"
 import styles from "./index.module.css"
+import {ButtonVariant} from "@/components/button/enum-variant";
 
 interface Session {
     user: {
@@ -33,9 +34,8 @@ function greeting (session: Session): ReactElement | null {
  * @param handler
  */
  function signingButton (content: string, handler: Function): ReactElement | null {
-     //todo: move button enums to a shared folder
     return (<>
-        <Button variant="blue" clickHandler={() => handler()}>
+        <Button variant={ButtonVariant.BLUE} clickHandler={() => handler()}>
             {content}
         </Button>
     </>)
@@ -60,7 +60,7 @@ function signOutButton (): ReactElement | null {
  * @param session
  */
 function wishListButton  (session: Session): ReactElement | null {
-    return (<Button variant="outline">
+    return (<Button variant={ButtonVariant.OUTLINE}>
         <Link href={`/list/${session?.user.fdlst_private_userId}`}>
             Your wish list
         </Link>
