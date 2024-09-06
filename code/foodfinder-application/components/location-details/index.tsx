@@ -4,6 +4,10 @@ import {LocationType} from "mongoose/locations/schema"
 import Button from "components/button"
 import styles from "./index.module.css"
 import {ButtonVariant} from "@/components/button/enum-variant"
+import gql from "graphql-tag";
+import {DocumentNode} from "graphql/language";
+import {useMutation} from "@apollo/client";
+import apolloClient from "@/components/location-details/apollo-client"
 
 interface PropsInterface {
     location: LocationType
@@ -56,8 +60,8 @@ function capitalizeFirstLetter (str: string): string {
  * the action is used to determine the mutation type
  * @param action
  */
-function getMutation (action: string): string {
-    return `
+function getMutation (action: string) {
+    return gql`
             mutation ${capitalizeFirstLetter(action)}($locationId: String!, $userId: String!) {
                 ${action}(location_id: $locationId, user_id: $userId) {
                     address
@@ -128,26 +132,37 @@ function getFetchOptions (props: WishlistInterface, action: string): RequestInit
  * @param setOnWishlist
  * @returns async void Function that can be used as click handler
  */
-function createClickHandler(loading:Boolean, onWishlist: Boolean, setLoading: Function, setOnWishlist: Function): Function{
+function CreateClickHandler(loading:Boolean,
+                            onWishlist: Boolean,
+                            setLoading: Function,
+                            setOnWishlist: Function): Function{
 
-    // param is props, wish list interface
-    //void method
-    // sets loading to true, invokes graphQL endpoint, then sets loading to false
+    const action = onWishlist ? WishlistAction.REMOVE : WishlistAction.ADD
+
+    const [toggleWishlist] = useMutation(getMutation(action), { client: apolloClient })
+
     return async (props: WishlistInterface) => {
         if (loading) {
-            return false
+            return false;
         }
-        setLoading(true)
-        const action = onWishlist ? WishlistAction.REMOVE : WishlistAction.ADD
+        setLoading(true);
+
         try {
-            const result = await fetch("/api/graphql", getFetchOptions(props, action))
-            if (result.status === 200) {
-                setOnWishlist(action == WishlistAction.ADD)
+            const { data } = await toggleWishlist({
+                variables: {
+                    locationId: props.locationId,
+                    userId: props.userId,
+                },
+            });
+
+            if (data) {
+                setOnWishlist(action === WishlistAction.ADD);
             }
         } catch (error) {
-            console.error({error})
+            console.error({ error });
         }
-        setLoading(false)
+
+        setLoading(false);
     }
 }
 
@@ -169,7 +184,7 @@ function ButtonElement(props: PropsInterface): ReactElement | null {
         )
     }, [session])
 
-    const wishlistAction = createClickHandler(loading, onWishlist, setLoading, setOnWishlist)
+    const wishlistAction = CreateClickHandler(loading, onWishlist, setLoading, setOnWishlist)
 
     return (<div>
         {session?.user.fdlst_private_userId && (wishListButton({
