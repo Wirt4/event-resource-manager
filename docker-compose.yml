@@ -16,6 +16,20 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - CHOKIDAR_INTERVAL=100
     tty: true
+  #Unit Tests
+  jest:
+    container_name: foodfinder-jest
+    image: node:lts-alpine
+    working_dir: /home/node/code/foodfinder-application
+    volumes:
+      - ./code:/home/node/code
+    depends_on:
+      - backend
+      - application
+    environment:
+      - NODE_ENV=test
+    tty: true
+    command: "npm run testWatch"
   #MongoDB
   backend:
     container_name: foodfinder-backend
