@@ -18,22 +18,21 @@ import {JWT} from "next-auth/jwt"
      return param.user_id === context?.token?.fdlst_private_userId
  }
 
+ function FourOhOne(authType: string): GraphQLError{
+    return new GraphQLError(`User is not ${authType}`,{
+        extensions:{
+            http:{status: 401},
+            code: `UN${authType.toUpperCase()}`
+        }
+    })
+ }
+
  export function authGuards (param: paramInterface, context: contextInterface):boolean{
     if (!isAuthenticated(context)) {
-        throw new GraphQLError("User is not authenticated",{
-            extensions:{
-                http:{status: 401},
-                code: "UNAUTHENTICATED"
-            }
-        })
+        throw FourOhOne('authenticated')
     }
     if (!isAuthorized(param, context)){
-        throw new GraphQLError("User is not authorized",{
-            extensions:{
-                http:{status: 401},
-                code: "UNAUTHORIZED"
-            }
-        })
+        throw FourOhOne('authorized')
     }
     return true
  }
