@@ -1,8 +1,8 @@
 import { updateWishList } from "@/mongoose/locations/services"
+import { authGuards } from "@/middleware/auth-guards"
 import { UpdateWishlistInterface } from "@/mongoose/locations/custom"
 import { actions } from "graphql/locations/enums/actions"
 import {JWT} from "next-auth/jwt"
-import {authGuards} from "@/middleware/auth-guards";
 // for use in resolvers
 
 interface contextInterface{

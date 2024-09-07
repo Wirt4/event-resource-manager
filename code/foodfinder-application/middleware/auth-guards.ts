@@ -10,8 +10,16 @@ import {JWT} from "next-auth/jwt"
     token: JWT
  }
 
- export function authGuards (param: paramInterface, context: contextInterface){
-    if (!context || !context.token || !context.token.fdlst_private_userId) {
+ function isAuthenticated(context: contextInterface):boolean{
+    return !!(context && context.token && context.token.fdlst_private_userId)
+ }
+
+ function isAuthorized(param: paramInterface, context: contextInterface){
+     return param.user_id === context?.token?.fdlst_private_userId
+ }
+
+ export function authGuards (param: paramInterface, context: contextInterface): GraphQLError | boolean{
+    if (!isAuthenticated(context)) {
         return new GraphQLError("User is not authenticated",{
             extensions:{
                 http:{status: 401},
@@ -19,9 +27,7 @@ import {JWT} from "next-auth/jwt"
             }
         })
     }
-    if (context?.token?.fdlst_private_userId !== param.user_id){
-        console.error({context})
-        console.error({param})
+    if (!isAuthorized(param, context)){
         return new GraphQLError("User is not authorized",{
             extensions:{
                 http:{status: 401},
