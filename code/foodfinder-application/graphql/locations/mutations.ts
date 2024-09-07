@@ -11,7 +11,6 @@ interface contextInterface{
 
 export const locationMutations = {
     removeWishlist: async function (_: any, param: UpdateWishlistInterface, context: contextInterface) {
-
         if (authGuards(param, context)){
             return updateWishList(param.location_id, param.user_id, actions.REMOVE)
         }

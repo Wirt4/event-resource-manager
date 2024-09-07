@@ -37,7 +37,7 @@ const setHeaders = function (res: NextApiResponse) {
 
 /**
  * sets the headers before calling the argument
- * @param handler : a Nextapi Handler, callable liek a method
+ * @param handler : a Nextapi Handler, callable like a method
  * @returns an asynchronous function 
  */
 const allowCors = function (handler: NextApiHandler) {
@@ -46,13 +46,16 @@ const allowCors = function (handler: NextApiHandler) {
         return handler(req, res)
     }
 }
+
 /**
- * 
- * @returns boilerplate empty token
+ * For passing the JWT to the request to graphql endpoint
+ * @param req
  */
-const blank_token = async function () {
-    return { token: {} }
+const contextToken = async function (req: NextApiRequest,)  {
+    const token = await getToken({req})
+    return {token}
 }
+
 
 /**
  * 
@@ -60,11 +63,7 @@ const blank_token = async function () {
  */
 const createHandler = function () {
     const server = new ApolloServer<BaseContext>({ resolvers, typeDefs })
-
-    return startServerAndCreateNextHandler(server, {context: async(req: NextApiRequest)=>{
-        const token = await getToken({req})
-            return {token}
-        }})
+    return startServerAndCreateNextHandler(server, {context: contextToken})
 }
 
 export default connectDB(allowCors(createHandler()))
