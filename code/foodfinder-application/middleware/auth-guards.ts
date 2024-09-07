@@ -18,9 +18,9 @@ import {JWT} from "next-auth/jwt"
      return param.user_id === context?.token?.fdlst_private_userId
  }
 
- export function authGuards (param: paramInterface, context: contextInterface): GraphQLError | boolean{
+ export function authGuards (param: paramInterface, context: contextInterface):boolean{
     if (!isAuthenticated(context)) {
-        return new GraphQLError("User is not authenticated",{
+        throw new GraphQLError("User is not authenticated",{
             extensions:{
                 http:{status: 401},
                 code: "UNAUTHENTICATED"
@@ -28,7 +28,7 @@ import {JWT} from "next-auth/jwt"
         })
     }
     if (!isAuthorized(param, context)){
-        return new GraphQLError("User is not authorized",{
+        throw new GraphQLError("User is not authorized",{
             extensions:{
                 http:{status: 401},
                 code: "UNAUTHORIZED"

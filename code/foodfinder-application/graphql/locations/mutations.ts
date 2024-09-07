@@ -8,22 +8,19 @@ import {JWT} from "next-auth/jwt"
 interface contextInterface{
     token:JWT
 }
+
 export const locationMutations = {
     removeWishlist: async function (_: any,
         param: UpdateWishlistInterface,
                                     context: contextInterface) {
-        const guard =authGuards(param, context)
-        if (guard !== true){
-            return guard
+
+        if (authGuards(param, context)){
+            return updateWishList(param.location_id, param.user_id, actions.REMOVE)
         }
-        return updateWishList(param.location_id, param.user_id, actions.REMOVE)
     },
 
     addWishlist: async function (_: any, param: UpdateWishlistInterface, context: contextInterface) {
-        const guard =authGuards(param, context)
-        if (guard !== true){
-            return guard
+        if (authGuards(param, context)){
+            return updateWishList(param.location_id, param.user_id, actions.ADD)}
         }
-        return updateWishList(param.location_id, param.user_id, actions.ADD)
-    }
 }
