@@ -10,7 +10,7 @@ import {JWT} from "next-auth/jwt"
     token: JWT
  }
 
- export const authGuards =(param: paramInterface, context: contextInterface) => {
+ export function authGuards (param: paramInterface, context: contextInterface){
     if (!context || !context.token || !context.token.fdlst_private_userId) {
         return new GraphQLError("User is not authenticated",{
             extensions:{
