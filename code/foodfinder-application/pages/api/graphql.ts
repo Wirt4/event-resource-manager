@@ -4,6 +4,7 @@ import { startServerAndCreateNextHandler } from "@as-integrations/next";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { resolvers } from "@/graphql/locations/resolvers";
 import { typeDefs } from "@/graphql/schema"
+import {getToken} from "next-auth/jwt";
 
 /**
  * calls dbConnect before calling the argument.
@@ -59,11 +60,11 @@ const blank_token = async function () {
  */
 const createHandler = function () {
     const server = new ApolloServer<BaseContext>({ resolvers, typeDefs })
-    const options = {
-        context: blank_token
-    }
 
-    return startServerAndCreateNextHandler(server, options)
+    return startServerAndCreateNextHandler(server, {context: async(req: NextApiRequest)=>{
+        const token = await getToken({req})
+            return {token}
+        }})
 }
 
 export default connectDB(allowCors(createHandler()))
