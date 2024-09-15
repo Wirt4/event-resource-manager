@@ -36,10 +36,10 @@ const Home: NextPage = function (props: InferGetStaticPropsType<typeof getStatic
   return (
     <div>
       <Head>
-        <title>The Food Finder - Home</title>
-        <meta name="description" content="The Food Finder - Home" />
+        <title>Event Reource Manager - Home</title>
+        <meta name="description" content="Event Resource Manager - Home" />
       </Head>
-      <h1>Welcome to the Food Finder!</h1>
+      <h1>Welcome to the Event Resource Manager!</h1>
       <LocationsList locations={locations} />
     </div>
   )
