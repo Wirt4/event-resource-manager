@@ -35,6 +35,14 @@ describe( 'findAllEvents()', () => {
 
         expect(result).toEqual([])
     })
+    test('The model throws, Error is logged to console', async()=>{
+        jest.spyOn(TheaterEvents, 'find').mockImplementationOnce(async () => {throw 'I am Error'})
+        const spy = jest.spyOn(console, 'error')
+
+        await findAllEvents()
+
+        expect(spy).toHaveBeenCalledWith('I am Error')
+    })
     test('confirm TheaterEvents.find() has been called with an empty object filer',async ()=>{
         const spy = jest.spyOn(TheaterEvents, 'find').mockImplementationOnce(async()=>[])
         await findAllEvents()

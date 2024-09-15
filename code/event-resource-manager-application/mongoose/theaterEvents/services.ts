@@ -6,6 +6,7 @@ export async function findAllEvents(): Promise<TheaterEventType[] | []> {
     try{
         events = await TheaterEvents.find({}) as TheaterEventType[]
     }catch(error){
+        console.error(error)
     }
 
     return events
