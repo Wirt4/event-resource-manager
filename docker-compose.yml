@@ -1,13 +1,14 @@
 services:
   #application - nextjs
   application:
-    container_name: foodfinder-application
+    container_name: event-resource-manager-application
     image: node:lts-alpine
     ports:
       - 3000:3000
     volumes:
       - ./code:/home/node/code
-    working_dir: /home/node/code/foodfinder-application
+    working_dir: /home/node/code/event-resource-manager-application
+
     command: "npm run dev"
     depends_on:
       - backend
@@ -18,9 +19,9 @@ services:
     tty: true
   #Unit Tests
   jest:
-    container_name: foodfinder-jest
+    container_name: event-resource-manager-jest
     image: node:lts-alpine
-    working_dir: /home/node/code/foodfinder-application
+    working_dir: /home/node/code/event-resource-manager-application
     volumes:
       - ./code:/home/node/code
     depends_on:
@@ -29,19 +30,20 @@ services:
     environment:
       - NODE_ENV=test
     tty: true
-    command: "npm run testWatch"
+
+    #command: "npm run testWatch"
   #MongoDB
   backend:
-    container_name: foodfinder-backend
+    container_name: event-resource-manager-backend
     image: mongo:latest
     restart: always
     environment:
-      DB_NAME: foodfinder
-      MONGO_INITDB_DATABASE: foodfinder
+      DB_NAME: event-resource-manager
+      MONGO_INITDB_DATABASE: event-resource-manager
     ports:
       - 27017:27017
     volumes:
-      - ./.docker/foodfinder-backend/seed-mongodb.js:/docker-entrypoint-initdb.d/seed-mongodb.js
+      - ./.docker/event-resource-manager-backend/seed-mongodb.js:/docker-entrypoint-initdb.d/seed-mongodb.js
       - mongodb_data_container:/data/db
 
 volumes:

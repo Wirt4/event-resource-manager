@@ -1,3 +1,13 @@
+## Fresh setup after clone
+In docker-compose.yml, comment out the command entry of the container `event-resource-manager-application`
+run `docker compose up -d` to start containers (this is assuming it's your build), run `docker exec -it event-resource-manager-application npm install` to install node
+Run `docker compose down`.
+Uncomment the command.
+Run `docker compose up` and log into localhost 3000, there should be a populated site.
+
+
+
+
 ## Running the Backend
 You can use docker commands to locally host the environment.
 `docker compose up -d`  starts the containers. I like using the  `-d` flag to run container in the background so I don't need to open a second terminal window.

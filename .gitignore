@@ -1,20 +1,20 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/code/foodfinder-application/node_modules
-/code/foodfinder-application/.pnp
+/code/event-resource-manager-application/node_modules
+/code/event-resource-manager-application/.pnp
 .pnp.js
 .yarn/install-state.gz
 
 # testing
-/code/foodfinder-application/coverage
+/code/event-resource-manager-application/coverage
 
 # next.js
-/code/foodfinder-application/.next/
-/code/foodfinder-application/out/
+/code/event-resource-manager-application/.next/
+/code/event-resource-manager-application/out/
 
 # production
-/code/foodfinder-application/build
+/code/event-resource-manager-application/build
 
 # misc
 .DS_Store
