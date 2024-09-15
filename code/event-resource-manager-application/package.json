@@ -1,9 +1,9 @@
 {
-  "name": "foodfinder-application",
+  "name": "event-resource-manager-application",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev":  "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -16,7 +16,7 @@
     "@as-integrations/next": "^3.1.0",
     "graphql": "^16.9.0",
     "graphql-tag": "^2.12.6",
-    "mongoose": "^8.5.4",
+    "mongoose": "^8.6.2",
     "next": "14.2.6",
     "next-auth": "^4.24.7",
     "react": "^18",
