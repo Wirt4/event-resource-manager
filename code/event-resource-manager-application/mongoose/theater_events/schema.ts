@@ -1,4 +1,4 @@
-import { Schema, InferSchemaType } from "mongoose"
+import { Schema } from "mongoose"
 
 export const TheaterEventSchema : Schema = new Schema<TheaterEventType>({
     name:{
@@ -15,5 +15,10 @@ export const TheaterEventSchema : Schema = new Schema<TheaterEventType>({
     }
 })
 
-export declare type TheaterEventType = InferSchemaType<typeof TheaterEventSchema>
+
+export interface TheaterEventType {
+    name: string;
+    showtimes: string[];
+    event_id: string;
+}
 

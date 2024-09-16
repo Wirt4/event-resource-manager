@@ -14,4 +14,4 @@ const seed_data = [
 ]
 
 //invoke mongo functionality
-db.theaterEvents.insert(seed_data)
+db.theater_events.insert(seed_data)

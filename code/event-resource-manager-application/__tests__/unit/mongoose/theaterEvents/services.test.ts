@@ -1,5 +1,5 @@
-import {findAllEvents} from "@/mongoose/theaterEvents/services"
-import TheaterEvents from "mongoose/theaterEvents/model"
+import {findAllEvents} from "@/mongoose/theater_events/services"
+import TheaterEvents from "@/mongoose/theater_events/model"
 
 describe( 'findAllEvents()', () => {
     test('non empty set one', async ()=>{
