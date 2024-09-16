@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 
-import logo from "/public/assets/logo.png"
+import logo from "/public/assets/mask.png"
 import styles from "./index.module.css"
 
 const Logo = function (): JSX.Element {
