@@ -11,3 +11,5 @@ declare module "next-auth" {
         } & DefaultSession["user"]
     }
 }
+
+declare module "uuid"

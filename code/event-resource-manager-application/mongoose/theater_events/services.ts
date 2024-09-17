@@ -1,4 +1,5 @@
 import {TheaterEventType} from "@/mongoose/theater_events/schema";
+import {v4 as uuidv4} from 'uuid';
 import theaterEvents from "@/mongoose/theater_events/model";
 
 interface newEvent {
@@ -24,6 +25,6 @@ export class EventServices{
     }
 
     hashId(): String{
-        return "stub"
+        return uuidv4()
     }
 }
