@@ -1,14 +1,18 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import dbConnect from "middleware/db-connect"
-import {findAllLocations, findLocationById} from "mongoose/locations/services"
+import theaterEvents from "@/mongoose/theater_events/model"
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>,
 ) {
   await dbConnect()
-  const locations = await findAllLocations()
-  console.log(typeof locations)
-  res.status(200).json(locations)
+  let events:any = []
+  try{
+    events = await theaterEvents.find()
+  }catch(error){
+    console.error({error})
+  }
+  res.status(200).json(events)
 }
