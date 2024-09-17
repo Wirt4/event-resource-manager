@@ -8,18 +8,24 @@ export const typeDefs = gql`
         showtimes: [String]!
     }
     
-    input TheaterEventInput {
-        name: String!
-        event_id: String!
+    input QueryInput {
+        name: String
+        event_id: String
         showtimes: [String]
     }
     
+    input AddTheaterEventInput {
+        name: String!
+        event_id: ID!
+        showtimes: [String!]!
+       }
+    
     type Mutation {
-        theaterEvents(data: TheaterEventInput):[TheaterEventType]!
+        addTheaterEvent(data: AddTheaterEventInput!): TheaterEventType!
     }
     
     type Query {
-        theaterEvents(name: String, event_id: String):[TheaterEventType]!
+        getAllTheaterEvents(data: QueryInput):[TheaterEventType]!
     }
     
 `

@@ -1,40 +1,24 @@
+import {EventServices} from "@/mongoose/theater_events/services";
+
 declare interface EventInterface {
-    name: string;
-    showtimes: string[];
-    event_id:string;
+    data: {
+        name: string;
+        showtimes: string[];
+        event_id: string;
+    }
 }
 
+const services = new EventServices()
+
 export const resolvers = {
-    Mutation:{
-        theaterEvents: async (_: any, param: {data: EventInterface})=>{
-            return[ {
-                name: "I'm Stu!",
-                showtimes: [
-                    '2024-10-11 19:00:00',
-                    '2024-10-12 19:00:00',
-                    '2024-10-13 15:00:00',
-                    '2024-10-18 19:00:00',
-                    '2024-10-19 19:00:00',
-                    '2024-10-20 15:00:00'
-                ],
-                event_id: "56018",
-            }]
+    Query:{
+        getAllTheaterEvents: async (_: any)=>{
+            return await services.findAllEvents();
         }
     },
-    Query:{
-        theaterEvents: async (_: any, param: {data: EventInterface})=>{
-            return[ {
-                name: "I'm Stu!",
-                showtimes: [
-                    '2024-10-11 19:00:00',
-                    '2024-10-12 19:00:00',
-                    '2024-10-13 15:00:00',
-                    '2024-10-18 19:00:00',
-                    '2024-10-19 19:00:00',
-                    '2024-10-20 15:00:00'
-                ],
-                event_id: "56018",
-            }]
+    Mutation:{
+        addTheaterEvent: async (_: any, {data}:  EventInterface)=>{
+            return services.addEvent(data)
         }
     }
 }
