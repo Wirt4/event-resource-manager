@@ -39,7 +39,6 @@ describe('Event Details Component', () => {
 
         const result = EventDetails({event: e})
         const elements = result?.props.children
-        console.log(elements)
 
         expect(elements[1]).toEqual(expect.objectContaining({type: 'p', props:{children: "Showtimes:"}}))
     })
@@ -53,7 +52,6 @@ describe('Event Details Component', () => {
 
         const result = EventDetails({event: e})
         const elements = result?.props.children
-        console.log(elements)
 
         expect(elements[2]).toEqual(expect.objectContaining({type: 'ul'}))
     })
@@ -73,7 +71,8 @@ describe('Event Details Component', () => {
     test('multiple showtimes, expect the unorderd list to have three elements',()=>{
         const e = {
             name:"Groundhog Day",
-            showtimes: ["2024-02-02 10:00:00",
+            showtimes: [
+                "2024-02-02 10:00:00",
                 "2024-02-02 12:00:00",
                 "2024-02-02 15:45:00",
                 "2024-02-02 20:15:00",
@@ -81,7 +80,6 @@ describe('Event Details Component', () => {
             event_id: '7890'
         }
         const result = EventDetails({event: e});
-        console.log(result?.props.children[2].props.children)
         expect(result?.props.children[2].props.children.length).toEqual(4);
     })
 })

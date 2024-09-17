@@ -11,7 +11,6 @@ function mappingFunction(showtime: string): ReactElement{
 
 function EventDetail (props: TheaterEventPropsInterface): ReactElement | null {
     const {event}  = props
-    let i = -1
     return (event &&
         <div>
             <p>{event.name}</p>

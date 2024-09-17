@@ -14,7 +14,7 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
         await dbConnect()
         locations = await onUserWishList(userId as string)
     } catch (err: any) {
-        console.log('error from connection...')
+        console.error('error from connection...')
         console.error({ err })
     }
 
