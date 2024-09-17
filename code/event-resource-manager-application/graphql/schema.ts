@@ -1,19 +1,25 @@
 import gql from "graphql-tag"
-import locationTypeDefsCustom from "graphql/locations/schema/custom.gql"
-import locationTypeDefsQueries from "@/graphql/locations/schema/queries.gql"
-import locationTypeDefsMutations from "graphql/locations/schema/mutations.gql"
 
-//graphql-tag transforms graphQL query into an abstract syntax tree readable by Apollo
 export const typeDefs = gql`
 
-${locationTypeDefsCustom}
-
-type Query {
-    ${locationTypeDefsQueries}
-}
+    type TheaterEventType {
+        name: String!
+        event_id: String!
+        showtimes: [String]!
+    }
     
-type Mutation {
-    ${locationTypeDefsMutations}
-}
+    input TheaterEventInput {
+        name: String!
+        event_id: String!
+        showtimes: [String]
+    }
+    
+    type Mutation {
+        theaterEvents(data: TheaterEventInput):[TheaterEventType]!
+    }
+    
+    type Query {
+        theaterEvents(name: String, event_id: String):[TheaterEventType]!
+    }
     
 `

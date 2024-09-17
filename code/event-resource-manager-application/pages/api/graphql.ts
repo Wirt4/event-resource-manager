@@ -2,7 +2,7 @@ import dbConnect from "@/middleware/db-connect";
 import { ApolloServer, BaseContext } from "@apollo/server";
 import { startServerAndCreateNextHandler } from "@as-integrations/next";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { resolvers } from "@/graphql/locations/resolvers";
+import { resolvers } from "@/graphql/resolvers"
 import { typeDefs } from "@/graphql/schema"
 import {getToken} from "next-auth/jwt";
 
@@ -62,6 +62,7 @@ async function contextToken  (req: NextApiRequest,)  {
  * @returns a handler for connecting NextApi with Apollo server
  */
 function createHandler () {
+    const foo ="bar"
     const server = new ApolloServer<BaseContext>({ resolvers, typeDefs })
     return startServerAndCreateNextHandler(server, {context: contextToken})
 }
