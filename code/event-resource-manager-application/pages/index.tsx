@@ -1,7 +1,7 @@
 import Head from "next/head"
 import dbConnect from "@/middleware/db-connect"
 import EventList from "@/components/event-list"
-import {findAllEvents} from "@/mongoose/theater_events/services"
+import {EventServices} from "@/mongoose/theater_events/services"
 import type { GetStaticProps, InferGetStaticPropsType, NextPage } from "next"
 import {TheaterEventType} from "@/mongoose/theater_events/schema"
 /**
@@ -11,9 +11,10 @@ import {TheaterEventType} from "@/mongoose/theater_events/schema"
  */
 export const getStaticProps: GetStaticProps = async function () {
   let events: TheaterEventType[] | []
+  const services = new EventServices()
   try {
     await dbConnect()
-    events = await findAllEvents()
+    events = await services.findAllEvents()
   } catch (err: any) {
     return { notFound: true }
   }
