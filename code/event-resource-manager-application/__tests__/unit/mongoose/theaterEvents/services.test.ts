@@ -1,4 +1,4 @@
-import {findAllEvents} from "@/mongoose/theater_events/services"
+import {findAllEvents, addEvent} from "@/mongoose/theater_events/services"
 import TheaterEvents from "@/mongoose/theater_events/model"
 
 describe( 'findAllEvents()', () => {
@@ -47,5 +47,41 @@ describe( 'findAllEvents()', () => {
         const spy = jest.spyOn(TheaterEvents, 'find').mockImplementationOnce(async()=>[])
         await findAllEvents()
         expect(spy).toHaveBeenCalledWith({})
+    })
+})
+
+describe('addEvent()', ()=>{
+    test('expect TheaterEvents.create() to have been called with a theater event', async ()=>{
+        const event = {
+            name: "Rio Bravo",
+            showtimes: [
+                '2024-10-11 19:00:00'
+            ]
+        }
+        const spy = jest.spyOn(TheaterEvents, 'create').mockImplementationOnce(async()=>[])
+        await addEvent(event)
+        expect(spy).toHaveBeenCalledWith(expect.objectContaining(event))
+    })
+    test('expect TheaterEvents.create() to have been called with a theater event: Different data', async ()=>{
+        const event = {
+            name: "Cats",
+            showtimes: [
+                '2025-12-11 12:00:00'
+            ]
+        }
+        const spy = jest.spyOn(TheaterEvents, 'create').mockImplementationOnce(async()=>[])
+        await addEvent(event)
+        expect(spy).toHaveBeenCalledWith(expect.objectContaining(event))
+    })
+    test('addId should be called', async()=>{
+        const event = {
+            name: "Cats",
+            showtimes: [
+                '2025-12-11 12:00:00'
+            ]
+        }
+        jest.spyOn(TheaterEvents, 'create').mockImplementationOnce(async()=>[])
+        await addEvent(event)
+        expect(spy).toHaveBeenCalledWith(expect.objectContaining(event))
     })
 })

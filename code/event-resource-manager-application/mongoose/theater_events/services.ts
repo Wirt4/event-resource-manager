@@ -1,6 +1,10 @@
 import {TheaterEventType} from "@/mongoose/theater_events/schema";
 import theaterEvents from "@/mongoose/theater_events/model";
 
+interface newEvent {
+    name: string;
+    showtimes: string[];
+}
 export async function findAllEvents(): Promise<TheaterEventType[] | []> {
     let events: TheaterEventType[] = []
     try{
@@ -10,4 +14,8 @@ export async function findAllEvents(): Promise<TheaterEventType[] | []> {
     }
 
     return events
+}
+
+export async function addEvent(event: newEvent): Promise<void>{
+    await theaterEvents.create(event)
 }
