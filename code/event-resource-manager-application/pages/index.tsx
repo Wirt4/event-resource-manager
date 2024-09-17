@@ -25,8 +25,8 @@ export const getStaticProps: GetStaticProps = async function () {
 }
 
 /**
- * 
- * @param props 
+ *
+ * @param props
  * @returns the landing page for the food finder
  */
 const Home: NextPage = function (props: InferGetStaticPropsType<typeof getStaticProps>) {

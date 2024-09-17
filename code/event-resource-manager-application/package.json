@@ -1,5 +1,5 @@
 {
-  "name": "foodfinder-application",
+  "name": "event-resource-manager-application",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -16,11 +16,12 @@
     "@as-integrations/next": "^3.1.0",
     "graphql": "^16.9.0",
     "graphql-tag": "^2.12.6",
-    "mongoose": "^8.5.4",
+    "mongoose": "^8.6.2",
     "next": "14.2.6",
     "next-auth": "^4.24.7",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "undici": "^6.19.8"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.5.0",
