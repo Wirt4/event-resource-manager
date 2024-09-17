@@ -19,6 +19,11 @@ export class EventServices{
     }
 
     async  addEvent(event: newEvent): Promise<void>{
-        await theaterEvents.create(event)
+        const taggedEvent = {...event, event_id: this.hashId() }
+        return theaterEvents.create(taggedEvent)
+    }
+
+    hashId(): String{
+        return "stub"
     }
 }

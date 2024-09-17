@@ -56,8 +56,13 @@ describe( 'findAllEvents()', () => {
 
 describe('addEvent()', ()=>{
     let services: EventServices
+    let createSpy:jest.SpyInstance
     beforeEach( () => {
+        createSpy = jest.spyOn(TheaterEvents, 'create').mockImplementationOnce(async()=>[])
         services = new EventServices()
+    })
+    afterEach(()=>{
+        jest.clearAllMocks()
     })
     test('expect TheaterEvents.create() to have been called with a theater event', async ()=>{
         const event = {
@@ -66,9 +71,8 @@ describe('addEvent()', ()=>{
                 '2024-10-11 19:00:00'
             ]
         }
-        const spy = jest.spyOn(TheaterEvents, 'create').mockImplementationOnce(async()=>[])
         await services.addEvent(event)
-        expect(spy).toHaveBeenCalledWith(expect.objectContaining(event))
+        expect(createSpy).toHaveBeenCalledWith(expect.objectContaining(event))
     })
     test('expect TheaterEvents.create() to have been called with a theater event: Different data', async ()=>{
         const event = {
@@ -77,8 +81,41 @@ describe('addEvent()', ()=>{
                 '2025-12-11 12:00:00'
             ]
         }
-        const spy = jest.spyOn(TheaterEvents, 'create').mockImplementationOnce(async()=>[])
         await services.addEvent(event)
-        expect(spy).toHaveBeenCalledWith(expect.objectContaining(event))
+        expect(createSpy).toHaveBeenCalledWith(expect.objectContaining(event))
+    })
+    test('want to add a hash id to the whole thing so each event is guaranteed to have an individual id', async()=>{
+        const event = {
+            name: "Cats",
+            showtimes: [
+                '2025-12-11 12:00:00'
+            ]
+        }
+        services.hashId = jest.fn(()=>"1701")
+        await services.addEvent(event)
+        expect(createSpy).toHaveBeenCalledWith({
+            name: "Cats",
+            showtimes: [
+                '2025-12-11 12:00:00'
+            ],
+            event_id: "1701"
+        })
+    })
+    test('want to add a hash id to the whole thing so each event is guaranteed to have an individual id', async()=>{
+        const event = {
+            name: "Cats",
+            showtimes: [
+                '2025-12-11 12:00:00'
+            ]
+        }
+        services.hashId = jest.fn(()=>"1876")
+        await services.addEvent(event)
+        expect(createSpy).toHaveBeenCalledWith({
+            name: "Cats",
+            showtimes: [
+                '2025-12-11 12:00:00'
+            ],
+            event_id: "1876"
+        })
     })
 })
