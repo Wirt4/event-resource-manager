@@ -24,7 +24,7 @@ export class EventServices{
     }
 
     async addEvent(event: newEvent): Promise<TheaterEventType>{
-        const taggedEvent = {...event, event_id: this.hashId() }
+        const taggedEvent = {...event, event_id: this.hashId(), opening_night: new Date(event.showtimes[0]).getTime() }
         return this._theaterEvents.create(taggedEvent)
     }
 

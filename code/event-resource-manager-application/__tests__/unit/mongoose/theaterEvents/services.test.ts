@@ -148,13 +148,7 @@ describe('addEvent()', ()=>{
         }
         services.hashId = jest.fn(()=>"1701")
         await services.addEvent(event)
-        expect(createSpy).toHaveBeenCalledWith({
-            name: "Cats",
-            showtimes: [
-                '2025-12-11 12:00:00'
-            ],
-            event_id: "1701"
-        })
+        expect(createSpy).toHaveBeenCalledWith(expect.objectContaining({event_id: "1701"}))
     })
     test('want to add a hash id to the whole thing so each event is guaranteed to have an individual id', async()=>{
         const event = {
@@ -165,12 +159,27 @@ describe('addEvent()', ()=>{
         }
         services.hashId = jest.fn(()=>"1876")
         await services.addEvent(event)
-        expect(createSpy).toHaveBeenCalledWith({
+        expect(createSpy).toHaveBeenCalledWith(expect.objectContaining({event_id: "1876"}))
+    })
+    test('need to automatically set opening night field', async()=>{
+        const event = {
             name: "Cats",
             showtimes: [
                 '2025-12-11 12:00:00'
-            ],
-            event_id: "1876"
-        })
+            ]
+        }
+        services.hashId = jest.fn(()=>"1876")
+        await services.addEvent(event)
+        expect(createSpy).toHaveBeenCalledWith(expect.objectContaining({ opening_night: 1765454400000}))
+    })
+    test('need to automatically set opening night field, different data', async()=>{
+        const event = {
+            name: "Death of a Salesman",
+            showtimes: [
+                '2025-07-04 18:00:00'
+            ]
+        }
+        await services.addEvent(event)
+        expect(createSpy).toHaveBeenCalledWith(expect.objectContaining({ opening_night: 1751652000000}))
     })
 })
