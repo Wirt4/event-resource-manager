@@ -37,10 +37,11 @@ const Home: NextPage = function (props: InferGetStaticPropsType<typeof getStatic
   return (
     <div>
       <Head>
-        <title>Event Resource Manager - Home</title>
-        <meta name="description" content="Event Resource Manager - Home" />
+        <title>EPHRAM - Home</title>
+        <meta name="description" content="EPHRAM - Event Production House Resources and Management" />
       </Head>
-      <h1>Welcome to the Event Resource Manager!</h1>
+      <h1>E.P.H.R.A.M.</h1>
+      <h2>Contents</h2>
       <EventList events={events}/>
     </div>
   )
