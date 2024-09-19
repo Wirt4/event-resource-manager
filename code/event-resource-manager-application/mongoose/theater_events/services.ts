@@ -12,6 +12,12 @@ export class EventServices{
         let events: TheaterEventType[] = []
         try{
             events = await theaterEvents.find({}) as TheaterEventType[]
+            events = events.sort(function(eventA,eventB){
+                // Turn your strings into dates, and then subtract them
+                // to get a value that is either negative, positive, or zero.
+                return new Date(eventA.showtimes[0]).valueOf() - new Date(eventB.showtimes[0]).valueOf()
+            });
+
         }catch(error){
             console.error(error)
         }
