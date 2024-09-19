@@ -28,7 +28,6 @@ describe('findAllEvents()', () => {
 
         expect(result).toEqual(target_events)
     })
-
     test('events should be in chronological order, so mongoose should filter by opening_night', async ()=>{
         const sortSpy = jest.fn()
         const mockTheaterEvents = {
@@ -46,33 +45,62 @@ describe('findAllEvents()', () => {
 
 
     })
-    /*
     test('empty set one', async ()=>{
-        jest.spyOn(TheaterEvents, 'find').mockImplementationOnce(async () => [])
+        const mockTheaterEvents = {
+            find: jest.fn(()=>{
+                return{  sort: jest.fn().mockResolvedValue([])}
+            }),
+            create: jest.fn()
+        };
+
+        const services =new EventServices(mockTheaterEvents as unknown as Model<any>)
         const result = await services.findAllEvents()
 
         expect(result).toEqual([])
     })
     test('The model throws, return empty array', async()=>{
-        jest.spyOn(TheaterEvents, 'find').mockImplementationOnce(async () => {throw 'I am Error'})
+        const mockTheaterEvents = {
+            find: jest.fn( ()=>{
+                return {sort: jest.fn().mockRejectedValue('I am Error')}
+            }),
+            create: jest.fn()
+        };
+        const services =new EventServices(mockTheaterEvents as unknown as Model<any>)
 
         const result = await services.findAllEvents()
 
         expect(result).toEqual([])
     })
     test('The model throws, Error is logged to console', async()=>{
-        jest.spyOn(TheaterEvents, 'find').mockImplementationOnce(async () => {throw 'I am Error'})
         const spy = jest.spyOn(console, 'error')
+
+        const mockTheaterEvents = {
+                find: jest.fn( ()=>{
+                    return {sort: jest.fn().mockRejectedValue('I am Error')}
+                }),
+            create: jest.fn()
+        };
+        const services =new EventServices(mockTheaterEvents as unknown as Model<any>)
 
         await services.findAllEvents()
 
         expect(spy).toHaveBeenCalledWith('I am Error')
     })
     test('confirm TheaterEvents.find() has been called with an empty object filer',async ()=>{
-        const spy = jest.spyOn(TheaterEvents, 'find').mockImplementationOnce(async()=>[])
+        const spy = jest.fn()
+
+        const mockTheaterEvents = {
+            find: jest.fn(async (p)=>{
+                await spy(p)
+                return {find: jest.fn()}
+            }),
+            create: jest.fn()
+        };
+        const services =new EventServices(mockTheaterEvents as unknown as Model<any>)
+
         await services.findAllEvents()
         expect(spy).toHaveBeenCalledWith({})
-    })*/
+    })
 })
 
 describe('addEvent()', ()=>{
