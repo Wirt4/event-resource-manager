@@ -1,6 +1,6 @@
 import {TheaterEventType} from "@/mongoose/theater_events/schema";
 import {v4 as uuidv4} from 'uuid';
-import theaterEvents from "@/mongoose/theater_events/model";
+import {Model} from "mongoose";
 
 interface newEvent {
     name: string;
@@ -8,16 +8,14 @@ interface newEvent {
 }
 
 export class EventServices{
+    _theaterEvents: Model<any>
+    constructor(theaterEvents: Model<any>) {
+        this._theaterEvents = theaterEvents
+    }
     async findAllEvents(): Promise<TheaterEventType[] | []> {
         let events: TheaterEventType[] = []
         try{
-            events = await theaterEvents.find({}) as TheaterEventType[]
-            events = events.sort(function(eventA,eventB){
-                // Turn your strings into dates, and then subtract them
-                // to get a value that is either negative, positive, or zero.
-                return new Date(eventA.showtimes[0]).valueOf() - new Date(eventB.showtimes[0]).valueOf()
-            });
-
+            events = await this._theaterEvents.find({}).sort({opening_night: 1}) as TheaterEventType[]
         }catch(error){
             console.error(error)
         }
@@ -27,7 +25,7 @@ export class EventServices{
 
     async addEvent(event: newEvent): Promise<TheaterEventType>{
         const taggedEvent = {...event, event_id: this.hashId() }
-        return theaterEvents.create(taggedEvent)
+        return this._theaterEvents.create(taggedEvent)
     }
 
     hashId(): String{
