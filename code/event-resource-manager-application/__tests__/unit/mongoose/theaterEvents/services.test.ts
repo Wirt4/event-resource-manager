@@ -17,8 +17,9 @@ describe('findAllEvents()', () => {
             event_id: "56018",
         }]
         const mockTheaterEvents = {
-            find: jest.fn().mockReturnThis(),
-            sort: jest.fn().mockResolvedValue(target_events),
+            find: jest.fn(()=>{
+                return{  sort: jest.fn().mockResolvedValue(target_events)}
+            }),
             create: jest.fn()
         };
 
@@ -80,8 +81,9 @@ describe('addEvent()', ()=>{
     beforeEach( () => {
         createSpy = jest.spyOn(TheaterEvents, 'create').mockImplementationOnce(async()=>[])
         const mockTheaterEvents = {
-            find: jest.fn().mockReturnThis(),
-            sort: jest.fn().mockResolvedValue([]),
+            find: jest.fn(()=>{
+                return {sort: jest.fn()}
+            }),
             create: createSpy
         };
         services = new EventServices(mockTheaterEvents as unknown as Model<any>)
