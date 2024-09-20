@@ -129,6 +129,32 @@ describe('addEvent()', ()=>{
         await services.addEvent(event)
         expect(createSpy).toHaveBeenCalledWith(expect.objectContaining(event))
     })
+    test('showtimes should be sorted chronologically', async()=>{
+        const event =  {
+            name: "Vintage Hitchcock",
+            showtimes: [
+                '2024-10-13 15:00:00',
+                '2024-10-11 19:00:00',
+                '2024-10-12 19:00:00',
+                '2024-10-19 19:00:00',
+                '2024-10-20 15:00:00',
+                '2024-10-18 19:00:00'
+            ],
+            event_id: "56018",
+            opening_night: 1728698400
+        }
+
+        const sorted_showtimes = [
+            '2024-10-11 19:00:00',
+            '2024-10-12 19:00:00',
+            '2024-10-13 15:00:00',
+            '2024-10-18 19:00:00',
+            '2024-10-19 19:00:00',
+            '2024-10-20 15:00:00'
+        ]
+        await services.addEvent(event)
+        expect(createSpy).toHaveBeenCalledWith(expect.objectContaining({ showtimes: sorted_showtimes}))
+    })
     test('expect TheaterEvents.create() to have been called with a theater event: Different data', async ()=>{
         const event = {
             name: "Cats",

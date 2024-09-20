@@ -23,7 +23,12 @@ export class EventServices{
         return events
     }
 
+     sortShowtimes(showtimes: string[]): string[] {
+        return showtimes.sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+    }
+
     async addEvent(event: newEvent): Promise<TheaterEventType>{
+        event.showtimes = this.sortShowtimes(event.showtimes)
         const taggedEvent = {...event, event_id: this.hashId(), opening_night: new Date(event.showtimes[0]).getTime() }
         return this._theaterEvents.create(taggedEvent)
     }
