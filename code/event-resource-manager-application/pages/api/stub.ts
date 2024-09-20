@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import dbConnect from "middleware/db-connect"
 import theaterEvents from "@/mongoose/theater_events/model"
+import {EventServices} from "@/mongoose/theater_events/services";
 
 export default async function handler(
   req: NextApiRequest,
@@ -9,8 +10,9 @@ export default async function handler(
 ) {
   await dbConnect()
   let events:any = []
+  const services =new EventServices()
   try{
-    events = await theaterEvents.find()
+    events = await services.findAllEvents()
   }catch(error){
     console.error({error})
   }

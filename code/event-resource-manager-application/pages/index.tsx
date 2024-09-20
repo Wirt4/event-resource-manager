@@ -4,6 +4,7 @@ import EventList from "@/components/event-list"
 import {EventServices} from "@/mongoose/theater_events/services"
 import type { GetStaticProps, InferGetStaticPropsType, NextPage } from "next"
 import {TheaterEventType} from "@/mongoose/theater_events/schema"
+import theaterEvents from "@/mongoose/theater_events/model"
 /**
  * It's a Next-sim that the function must be named "getStaticProps" and be exported
  * Page does not compile otherwise
@@ -11,7 +12,7 @@ import {TheaterEventType} from "@/mongoose/theater_events/schema"
  */
 export const getStaticProps: GetStaticProps = async function () {
   let events: TheaterEventType[] | []
-  const services = new EventServices()
+  const services = new EventServices(theaterEvents)
   try {
     await dbConnect()
     events = await services.findAllEvents()
