@@ -24,6 +24,7 @@ export class EventServices{
     }
 
      sortShowtimes(showtimes: string[]): string[] {
+        //Date creation is O(1) operation, no advantage to storing a heap since we'd need ot do a full sort each time
         return showtimes.sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
     }
 
